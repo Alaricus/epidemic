@@ -1,0 +1,71 @@
+body {
+  background-color: rgb(224, 224, 224);
+  color: black;
+  font-family: monospace;
+}
+
+main {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+form {
+  display: inline-block;
+  text-align: left;
+  margin: 0 3rem 0 auto;
+}
+
+input[type=number] {
+  width: 50px;
+}
+
+#results {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto 0 3rem;
+}
+
+.result {
+  display: block;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 200px;
+}
+
+.legend {
+  display: inline-block;
+  position: relative;
+  height: 10px;
+  width: 10px;
+  border-radius: 10px;
+  margin-right: 6px;
+}
+
+.info {
+  display: inline-block;
+}
+
+.healthy {
+  background-color: forestgreen;
+}
+
+.ill {
+  background-color: red;
+}
+
+.contageous {
+  background-color: gold;
+}
+
+.recovered {
+  background-color: royalblue;
+}
+
+.dead {
+  background-color: darkgray;
+}
