@@ -192,12 +192,12 @@ const draw = () => {
 
 const main = () => {
   const now = Date.now();
-  let ongoing = null;
+  let ongoing = true;
 
   if (prev + tick < now) {
     ongoing = update();
     draw();
-    previous = now;
+    prev = now;
   }
 
   if (ongoing) {
