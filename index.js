@@ -37,7 +37,7 @@ const stats = {
   '5': 0
 };
 
-const tick = 33;
+const tickrate = 33;
 let prev = Date.now();
 
 const statuses = {
@@ -194,7 +194,7 @@ const main = () => {
   const now = Date.now();
   let ongoing = true;
 
-  if (prev + tick < now) {
+  if (prev + tickrate < now) {
     ongoing = update();
     draw();
     prev = now;
