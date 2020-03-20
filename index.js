@@ -37,6 +37,9 @@ const stats = {
   '5': 0
 };
 
+const tickrate = 33;
+let prev = Date.now();
+
 const statuses = {
   '1': 'forestgreen',  // healthy
   '2': 'red',          // sick
@@ -188,8 +191,15 @@ const draw = () => {
 };
 
 const main = () => {
-  const ongoing = update();
-  draw();
+  const now = Date.now();
+  let ongoing = true;
+
+  if (prev + tickrate < now) {
+    ongoing = update();
+    draw();
+    prev = now;
+  }
+
   if (ongoing) {
     animID = requestAnimationFrame(main);
   } else {
