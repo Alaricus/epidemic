@@ -54,6 +54,12 @@ input[type=number] {
   background-color: forestgreen;
 }
 
+.quarantined {
+  height: 6px;
+  width: 6px;
+  border: 2px solid forestgreen;
+}
+
 .ill {
   background-color: red;
 }

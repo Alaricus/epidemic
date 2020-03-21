@@ -2,6 +2,7 @@ const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const populationInput = document.querySelector('#population');
 const infectedInput = document.querySelector('#infected');
+const quarantinedInput = document.querySelector('#quarantined');
 const illnessTimeInput = document.querySelector('#illnessTime');
 const recoveryTimeInput = document.querySelector('#recoveryTime');
 const oddsOfDeathInput = document.querySelector('#oddsOfDeath');
@@ -12,6 +13,7 @@ const form = document.querySelector('form');
 
 const results = document.querySelector('#results');
 const resultsHealthy = document.querySelector('#resultsHealthy');
+const resultsQuarantined = document.querySelector('#resultsQuarantined');
 const resultsIll = document.querySelector('#resultsIll');
 const resultsContageous = document.querySelector('#resultsContageous');
 const resultsRecovered = document.querySelector('#resultsRecovered');
@@ -19,6 +21,7 @@ const resultsDead = document.querySelector('#resultsDead');
 
 let population = null;
 let infected = null;
+let quarantined = null;
 let illnessTime = null;
 let recoveryTime = null;
 let oddsOfDeath = null;
@@ -45,7 +48,8 @@ const statuses = {
   '2': 'red',          // sick
   '3': 'gold',         // recovering but contageous
   '4': 'royalblue',    // recovered and immune
-  '5': 'darkgray'      // dead
+  '5': 'darkgray',     // dead
+  '6': 'forestgreen'   // quarantined
 };
 
 const makePerson = maxVelocity => ({
@@ -54,8 +58,8 @@ const makePerson = maxVelocity => ({
   r: 5,
   vx: Math.random() * (velocity * 2) - velocity,
   vy: Math.random() * (velocity * 2) - velocity,
-  s: 1,
-  t: null
+  s: 1,    // status
+  t: null  // timestamp
 });
 
 const isCollided = (a, b) => {
@@ -78,8 +82,9 @@ const bounce = v => {
 const init = () => {
   population = populationInput.value || 100;
   infected = infectedInput.value || 1;
-  illnessTime = illnessTimeInput.value * 1000;
-  recoveryTime = recoveryTimeInput.value * 1000;
+  quarantined = quarantinedInput.value || 0;
+  illnessTime = (illnessTimeInput.value || 6) * 1000;
+  recoveryTime = (recoveryTimeInput.value || 2) * 1000;
   oddsOfDeath = oddsOfDeathInput.value || 2;
   velocity = velocityInput.value || 0.5
   width = widthInput.value || 600;
@@ -97,6 +102,12 @@ const init = () => {
       people[people.length - 1].t = Date.now();
       infected -= 1;
     }
+    if (people[people.length - 1].s !== 2 && quarantined > 0) {
+      people[people.length - 1].s = 6;
+      people[people.length - 1].vx = 0;
+      people[people.length - 1].vy = 0;
+      quarantined -= 1;
+    }
   }
 };
 
@@ -106,6 +117,7 @@ const update = () => {
   stats['3'] = 0;
   stats['4'] = 0;
   stats['5'] = 0;
+  stats['6'] = 0;
 
   people.forEach((person, i) => {
     person.x += person.vx;
@@ -131,12 +143,46 @@ const update = () => {
       const p = people[j];
 
       if (isCollided(person, p)) {
-        if (person.x >= p.x) {
-          person.vy = bounce(person.vy);
+        const dx = person.x - p.x;
+        const dy = person.y - p.y;
+
+        if (dx <= 0) {
+          if (dy <= 0) {
+            person.x -= Math.abs(person.vx);
+            person.y -= Math.abs(person.vy);
+            p.x += Math.abs(p.vx);
+            p.y += Math.abs(p.vy);
+          } else {
+            person.x -= Math.abs(person.vx);
+            person.y += Math.abs(person.vy);
+            p.x += Math.abs(p.vx);
+            p.y -= Math.abs(p.vy);
+          }
         }
-        if (person.y >= p.y) {
+
+        if (dx > 0) {
+          if (dy <= 0) {
+            person.x += Math.abs(person.vx);
+            person.y -= Math.abs(person.vy);
+            p.x -= Math.abs(p.vx);
+            p.y += Math.abs(p.vy);
+          } else {
+            person.x += Math.abs(person.vx);
+            person.y += Math.abs(person.vy);
+            p.x -= Math.abs(p.vx);
+            p.y -= Math.abs(p.vy);
+          }
+        }
+
+        if (person.s !== 5 && person.s !== 6) {
+          person.vy = bounce(person.vy);
           person.vx = bounce(person.vx);
         }
+        if (p.s !== 5 && p.s !== 6) {
+          p.vy = bounce(p.vy);
+          p.vx = bounce(p.vx);
+        }
+
         if ((person.s === 2 || person.s === 3) && p.s === 1) {
           p.s = 2;
           p.t = Date.now();
@@ -168,6 +214,7 @@ const update = () => {
     resultsContageous.value = stats['3'] || 0;
     resultsRecovered.value = stats['4'] || 0;
     resultsDead.value = stats['5'] || 0;
+    resultsQuarantined.value = stats['6'] || 0;
   });
 
 
@@ -187,6 +234,13 @@ const draw = () => {
     ctx.beginPath();
     ctx.arc(person.x, person.y, person.r, 0, 2 * Math.PI);
     ctx.fill();
+
+    if (person.s === 6) {
+      ctx.fillStyle = 'black';
+      ctx.beginPath();
+      ctx.arc(person.x, person.y, person.r - 2, 0, 2 * Math.PI);
+      ctx.fill();
+    }
   });
 };
 
