@@ -46,9 +46,9 @@ const stats = {
   '7': 0
 };
 
-const start = Date.now();
 const tickrate = 33;
 let prev = Date.now();
+let start = null;
 
 const statuses = {
   '1': 'forestgreen',  // healthy
@@ -99,6 +99,8 @@ const infect = p => {
 };
 
 const init = () => {
+  start = Date.now();
+
   population = populationInput.value || 200;
   infected = infectedInput.value || 1;
   quarantined = quarantinedInput.value || 0;
