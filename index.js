@@ -5,6 +5,7 @@ const infectedInput = document.querySelector('#infected');
 const quarantinedInput = document.querySelector('#quarantined');
 const illnessTimeInput = document.querySelector('#illnessTime');
 const recoveryTimeInput = document.querySelector('#recoveryTime');
+const oddsOfReinfectionInput = document.querySelector('#oddsOfReinfection');
 const oddsOfDeathInput = document.querySelector('#oddsOfDeath');
 const velocityInput = document.querySelector('#velocity');
 const widthInput = document.querySelector('#width');
@@ -17,6 +18,7 @@ const resultsQuarantined = document.querySelector('#resultsQuarantined');
 const resultsIll = document.querySelector('#resultsIll');
 const resultsContageous = document.querySelector('#resultsContageous');
 const resultsRecovered = document.querySelector('#resultsRecovered');
+const resultsReinfected = document.querySelector('#resultsReinfected');
 const resultsDead = document.querySelector('#resultsDead');
 
 let population = null;
@@ -24,6 +26,7 @@ let infected = null;
 let quarantined = null;
 let illnessTime = null;
 let recoveryTime = null;
+let oddsOfReinfection = null;
 let oddsOfDeath = null;
 let velocity = null;
 let width = null;
@@ -37,7 +40,9 @@ const stats = {
   '2': 0,
   '3': 0,
   '4': 0,
-  '5': 0
+  '5': 0,
+  '6': 0,
+  '7': 0
 };
 
 const tickrate = 33;
@@ -49,7 +54,8 @@ const statuses = {
   '3': 'gold',         // recovering but contageous
   '4': 'royalblue',    // recovered and immune
   '5': 'darkgray',     // dead
-  '6': 'forestgreen'   // quarantined
+  '6': 'forestgreen',  // quarantined
+  '7': 'magenta'       // reinfected
 };
 
 const makePerson = maxVelocity => ({
@@ -77,14 +83,26 @@ const bounce = v => {
     return Math.random() * -velocity;
   }
   return 0;
-}
+};
+
+const infect = p => {
+  if (p.s === 1) {
+    p.s = 2;
+    p.t = Date.now();
+  }
+  if (p.s === 4 && Math.floor((Math.random() * 100) + 1) <= oddsOfReinfection) {
+    p.s = 7;
+    p.t = Date.now();
+  }
+};
 
 const init = () => {
-  population = populationInput.value || 100;
+  population = populationInput.value || 200;
   infected = infectedInput.value || 1;
   quarantined = quarantinedInput.value || 0;
   illnessTime = (illnessTimeInput.value || 6) * 1000;
   recoveryTime = (recoveryTimeInput.value || 2) * 1000;
+  oddsOfReinfection = oddsOfReinfectionInput.value || 3;
   oddsOfDeath = oddsOfDeathInput.value || 2;
   velocity = velocityInput.value || 0.5
   width = widthInput.value || 600;
@@ -118,6 +136,7 @@ const update = () => {
   stats['4'] = 0;
   stats['5'] = 0;
   stats['6'] = 0;
+  stats['7'] = 0;
 
   people.forEach((person, i) => {
     person.x += person.vx;
@@ -183,19 +202,17 @@ const update = () => {
           p.vx = bounce(p.vx);
         }
 
-        if ((person.s === 2 || person.s === 3) && p.s === 1) {
-          p.s = 2;
-          p.t = Date.now();
+        if (person.s === 2 || person.s === 3 || p.s === 7) {
+          infect(p);
         }
-        if ((p.s === 2 || p.s === 3) && person.s === 1) {
-          person.s = 2;
-          person.t = Date.now();
+        if (p.s === 2 || p.s === 3 || p.s === 7) {
+          infect(person);
         }
       }
     }
 
-    if (person.s === 2 && Date.now() - person.t >= illnessTime) {
-      if (oddsOfDeath !== 0 && Math.floor(Math.random() * 101) <= oddsOfDeath) {
+    if ((person.s === 2 || person.s === 7) && Date.now() - person.t >= illnessTime) {
+      if (Math.floor((Math.random() * 100) + 1) <= oddsOfDeath) {
         person.s = 5;
         person.vx = 0;
         person.vy = 0;
@@ -215,10 +232,11 @@ const update = () => {
     resultsRecovered.value = stats['4'] || 0;
     resultsDead.value = stats['5'] || 0;
     resultsQuarantined.value = stats['6'] || 0;
+    resultsReinfected.value = stats['7'] || 0;
   });
 
 
-  if (stats['2'] === 0 && stats['3'] === 0) {
+  if (stats['2'] === 0 && stats['3'] === 0 && stats['7'] === 0) {
     return false;
   }
 

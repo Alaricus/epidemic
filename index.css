@@ -16,7 +16,7 @@ main {
 form {
   display: inline-block;
   text-align: left;
-  margin: 0 3rem 0 auto;
+  margin: 0 2rem 0 auto;
 }
 
 input[type=number] {
@@ -27,14 +27,14 @@ input[type=number] {
   position: relative;
   display: inline-block;
   text-align: left;
-  margin: 0 auto 0 3rem;
+  margin: 0 auto 0 2rem;
 }
 
 .result {
   display: block;
   justify-content: space-evenly;
   align-items: center;
-  width: 200px;
+  width: 250px;
 }
 
 .legend {
@@ -70,6 +70,10 @@ input[type=number] {
 
 .recovered {
   background-color: royalblue;
+}
+
+.reinfected {
+  background-color: magenta;
 }
 
 .dead {
