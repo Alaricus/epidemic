@@ -20,6 +20,7 @@ const resultsContageous = document.querySelector('#resultsContageous');
 const resultsRecovered = document.querySelector('#resultsRecovered');
 const resultsReinfected = document.querySelector('#resultsReinfected');
 const resultsDead = document.querySelector('#resultsDead');
+const resultsDuration = document.querySelector('#resultsDuration');
 
 let population = null;
 let infected = null;
@@ -45,6 +46,7 @@ const stats = {
   '7': 0
 };
 
+const start = Date.now();
 const tickrate = 33;
 let prev = Date.now();
 
@@ -233,6 +235,7 @@ const update = () => {
     resultsDead.value = stats['5'] || 0;
     resultsQuarantined.value = stats['6'] || 0;
     resultsReinfected.value = stats['7'] || 0;
+    resultsDuration.value = parseInt((Date.now() - start) / 1000);
   });
 
 
