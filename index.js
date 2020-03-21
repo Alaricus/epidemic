@@ -11,8 +11,8 @@ const velocityInput = document.querySelector('#velocity');
 const widthInput = document.querySelector('#width');
 const heightInput = document.querySelector('#height');
 const form = document.querySelector('form');
+const placeholder = document.querySelector('#placeholder');
 
-const results = document.querySelector('#results');
 const resultsHealthy = document.querySelector('#resultsHealthy');
 const resultsQuarantined = document.querySelector('#resultsQuarantined');
 const resultsIll = document.querySelector('#resultsIll');
@@ -52,8 +52,8 @@ let prev = Date.now();
 
 const statuses = {
   '1': 'forestgreen',  // healthy
-  '2': 'red',          // sick
-  '3': 'gold',         // recovering but contageous
+  '2': '#860000',      // sick
+  '3': 'goldenrod',    // recovering but contageous
   '4': 'royalblue',    // recovered and immune
   '5': 'darkgray',     // dead
   '6': 'forestgreen',  // quarantined
@@ -247,7 +247,7 @@ const update = () => {
 };
 
 const draw = () => {
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = "#111111";
   ctx.fillRect(0, 0, width, height);
 
   people.forEach(person => {
@@ -284,8 +284,9 @@ const main = () => {
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-  results.style.display = 'block';
   cancelAnimationFrame(animID);
+  placeholder.style.display = 'none';
+  canvas.style.display = 'block';
   init();
   main();
 });

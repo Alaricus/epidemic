@@ -1,40 +1,71 @@
 body {
-  background-color: rgb(224, 224, 224);
-  color: black;
-  font-family: monospace;
+  background-color: rgb(22, 22, 22); /* rgb(224, 224, 224); */
+  color: white;
+  font-family: 'Inconsolata', monospace;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
 }
 
 main {
-  text-align: center;
+  position: relative;
+  width: 800px;
+  padding: 15px;
+  margin: 0 auto;
+  background-color: rgb(44, 44, 44);
+  border-radius: 0 0 3px 3px;
 }
 
-.container {
-  display: flex;
-  justify-content: space-between;
+.data {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  grid-column-gap: 4%;
+  grid-row-gap: 5px;
+  margin: 0.5rem 0 1rem;
 }
 
-form {
-  display: inline-block;
-  text-align: left;
-  margin: 0 2rem 0 auto;
+.option {
+  border-radius: 3px;
+  padding: 3px;
+  background-color: rgb(110, 110, 110);
+}
+
+input {
+  font-family: monospace;
+  background-color: rgb(240, 240, 240);
+}
+
+input:disabled {
+  background-color: rgb(190, 190, 190);
+  color: rgb(31, 31, 31);
 }
 
 input[type=number] {
   width: 50px;
+  padding: 2px;
+  border-radius: 3px;
+  border: none;
 }
 
-#results {
-  position: relative;
-  display: inline-block;
-  text-align: left;
-  margin: 0 auto 0 2rem;
+.results {
+  display: grid;
+  grid-template-columns: 32% 32% 32%;
+  grid-column-gap: 2%;
+  grid-row-gap: 5px;
+  margin: 0 0 1rem;
 }
 
 .result {
-  display: block;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 250px;
+  border-radius: 3px;
+  padding: 3px;
+  background-color: rgb(110, 110, 110);
+}
+
+.start {
+  border: none;
+  background-color: rgb(0, 143, 0);
+  color: white;
+  font-size: 0.85rem;
 }
 
 .legend {
@@ -43,11 +74,7 @@ input[type=number] {
   height: 10px;
   width: 10px;
   border-radius: 10px;
-  margin-right: 6px;
-}
-
-.info {
-  display: inline-block;
+  margin-right: 3px;
 }
 
 .healthy {
@@ -61,11 +88,11 @@ input[type=number] {
 }
 
 .ill {
-  background-color: red;
+  background-color: #860000;
 }
 
 .contageous {
-  background-color: gold;
+  background-color: goldenrod;
 }
 
 .recovered {
@@ -78,4 +105,25 @@ input[type=number] {
 
 .dead {
   background-color: darkgray;
+}
+
+#placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 800px;
+  margin: 0 auto;
+  border-radius: 3px;
+  background-color: rgb(17, 17, 17);
+}
+
+#placeholder p {
+  font-size: 2rem;
+  color: rgb(219, 219, 219);
+}
+
+canvas {
+  display: none;
+  border-radius: 3px;
 }
