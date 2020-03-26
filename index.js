@@ -8,8 +8,8 @@ const recoveryTimeInput = document.querySelector('#recoveryTime');
 const oddsOfReinfectionInput = document.querySelector('#oddsOfReinfection');
 const oddsOfDeathInput = document.querySelector('#oddsOfDeath');
 const velocityInput = document.querySelector('#velocity');
-const widthInput = document.querySelector('#width');
-const heightInput = document.querySelector('#height');
+// const widthInput = document.querySelector('#width');
+// const heightInput = document.querySelector('#height');
 const form = document.querySelector('form');
 const placeholder = document.querySelector('#placeholder');
 
@@ -30,8 +30,8 @@ let recoveryTime = null;
 let oddsOfReinfection = null;
 let oddsOfDeath = null;
 let velocity = null;
-let width = null;
-let height = null;
+// let width = null;
+// let height = null;
 
 let people = null;
 let animID = null;
@@ -109,8 +109,8 @@ const init = () => {
   oddsOfReinfection = oddsOfReinfectionInput.value || 3;
   oddsOfDeath = oddsOfDeathInput.value || 2;
   velocity = velocityInput.value || 0.5
-  width = widthInput.value || 600;
-  height = heightInput.value || 300;
+  width = 800; // widthInput.value || 800;
+  height = 400; // heightInput.value || 400;
 
   ctx.canvas.width = width;
   ctx.canvas.height = height;
